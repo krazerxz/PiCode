@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+# ============================================
+  ruby_version=2.2.2
+# ============================================
+
+# ===========
+# install system packages
+# ===========
+apt-get update
+apt-get install -y curl git-core ruby1.9.3 wget vim
+
+# ===========
+# install rvm
+# ===========
+if [[ ! -f /etc/profile.d/rvm.sh ]]; then
+  success "Installing rvm..."
+  gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
+  curl -L get.rvm.io | bash -s stable 3>&1 1>/dev/null 2>&3- |  sed 's/^/        /'
+  sudo bash -c "source /etc/profile.d/rvm.sh && rvm install ${ruby_version} --default 3>&1 1>/dev/null 2>&3- |  sed 's/^/        /'"
+fi
+
+# =======
+# project
+# =======
+#cd .. && cd -
+rvm rvmrc trust
+rvm rvmrc load
+GIT_SSL_NO_VERIFY=true bundle install --local --deployment
