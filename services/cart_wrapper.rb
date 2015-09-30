@@ -1,6 +1,5 @@
 class CartWrapper
   def initialize(uri)
-    uri = URI.parse(uri)
     @http = Net::HTTP.new(uri.host, uri.port)
   end
 

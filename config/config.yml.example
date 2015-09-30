@@ -1,0 +1,5 @@
+test:
+  api_url: "http://example.com"
+
+development:
+  api_url: "http://localhost:3000"
