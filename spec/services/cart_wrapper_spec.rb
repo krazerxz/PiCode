@@ -2,22 +2,18 @@ require 'spec_helper'
 
 describe CartWrapper do
   describe '#initialize' do
-    let(:parsed_uri) { double(:parsed_uri, host: 'http://example.com', port: 1) }
-
-    before do
-      allow(URI).to receive(:parse).and_return(parsed_uri)
-    end
 
     it 'it creates an instance of net/http' do
-      expect(Net::HTTP).to receive(:new).with('http://example.com', 1)
-      CartWrapper.new('http://example.com')
+      expect(Net::HTTP).to receive(:new).with('example.com', 80)
+      CartWrapper.new(URI('http://example.com/some_path'))
     end
   end
 
   describe '#send_barcode' do
     let(:net_http)         { double(:net_http) }
     let(:net_http_request) { double(:net_http_request).as_null_object }
-    let(:cart_wrapper)     { CartWrapper.new('http://example.com') }
+    let(:api_uri)          { URI('http://example.com/some_path')}
+    let(:cart_wrapper)     { CartWrapper.new(api_uri) }
 
     before do
       allow(Net::HTTP::Post).to receive(:new).and_return(net_http_request)
@@ -26,13 +22,12 @@ describe CartWrapper do
     end
 
     it 'it creates a new http post' do
-      expect(Net::HTTP::Post).to receive(:new).with('api/barcodes/')
+      expect(Net::HTTP::Post).to receive(:new).with(api_uri, 'Content-Type' => 'application/json')
       cart_wrapper.send_barcode(1234)
     end
 
     it 'sets the type and body of request' do
-      expect(net_http_request).to receive(:add_field).with('Content-Type', 'application/json')
-      expect(net_http_request).to receive(:body=).with('barcode' => 1234)
+      expect(net_http_request).to receive(:body=).with(JSON.generate('upc' => 1234))
       cart_wrapper.send_barcode(1234)
     end
 
