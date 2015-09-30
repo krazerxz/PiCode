@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe CartWrapper do
   describe '#initialize' do
-
     it 'it creates an instance of net/http' do
       expect(Net::HTTP).to receive(:new).with('example.com', 80)
       CartWrapper.new(URI('http://example.com/some_path'))
@@ -12,7 +11,7 @@ describe CartWrapper do
   describe '#send_barcode' do
     let(:net_http)         { double(:net_http) }
     let(:net_http_request) { double(:net_http_request).as_null_object }
-    let(:api_uri)          { URI('http://example.com/some_path')}
+    let(:api_uri)          { URI('http://example.com/some_path') }
     let(:cart_wrapper)     { CartWrapper.new(api_uri) }
 
     before do
