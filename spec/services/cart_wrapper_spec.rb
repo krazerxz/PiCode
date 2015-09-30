@@ -27,7 +27,7 @@ describe CartWrapper do
 
     it 'sets the type and body of request' do
       expect(net_http_request).to receive(:add_field).with('Content-Type', 'application/json')
-      expect(net_http_request).to receive(:body=).with('barcode' => 1234)
+      expect(net_http_request).to receive(:body=).with('upc' => 1234)
       cart_wrapper.send_barcode(1234)
     end
 

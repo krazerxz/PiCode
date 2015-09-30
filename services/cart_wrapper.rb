@@ -7,7 +7,7 @@ class CartWrapper
     request = Net::HTTP::Post.new('api/barcodes/')
 
     request.add_field('Content-Type', 'application/json')
-    request.body = { 'barcode' => barcode }
+    request.body = { 'upc' => barcode }
     @http.request(request)
   end
 end
