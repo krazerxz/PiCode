@@ -4,11 +4,13 @@ require 'byebug'
 class Scanner
   def self.begin
     cart_wrapper=CartWrapper.new(api_url)
-    #loop do
+    while scan
       barcode = $stdin.gets.chomp
       cart_wrapper.send_barcode(barcode)
-      #break if barcode =~ /q/
-    #end
+    end
+  end
+  def self.scan
+    true
   end
 
   def self.api_url
