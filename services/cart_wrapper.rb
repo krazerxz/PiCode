@@ -8,7 +8,7 @@ class CartWrapper
 
   def send_barcode(barcode)
     request = Net::HTTP::Post.new(@uri, 'Content-Type' => 'application/json')
-    request.body = JSON.generate('upc' => barcode)
+    request.body = JSON.generate('product' => { 'barcode' => barcode })
     @http.request(request)
   end
 end
